@@ -61,7 +61,6 @@ public class SistemaCadastroTest {
         String idade = "28";
         String email = "linemuniz@yahoo.com";
 
-        // Act and Assert
         try {
             SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             Assert.fail("Expected CadastroInvalidoException to be thrown");
@@ -73,7 +72,7 @@ public class SistemaCadastroTest {
 
     @Test
     public void testeCampoSobrenomeVazio() {
-        // Arrange
+
         String nome = "Hélio";
         String sobrenome = "";
         String cidade = "Castro Alves";
@@ -82,7 +81,6 @@ public class SistemaCadastroTest {
         String idade = "31";
         String email = "arthurhenrique.peres@yahoo.com";
 
-        // Act and Assert
         try {
             SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             Assert.fail("Expected CadastroInvalidoException to be thrown");
@@ -103,7 +101,6 @@ public class SistemaCadastroTest {
         String idade = "31";
         String email = "arthurhenrique.peres@yahoo.com";
 
-        // Act and Assert
         try {
             SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             Assert.fail("Expected CadastroInvalidoException to be thrown");
