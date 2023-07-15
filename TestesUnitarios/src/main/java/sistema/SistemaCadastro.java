@@ -1,6 +1,5 @@
 package sistema;
 
-import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,21 +7,24 @@ public class SistemaCadastro {
 
     public static String consoleOutputString = "Cadastro realizado com sucesso";
 
-    public static void main() {
-    	 String nome = "Olívia";
-         String sobrenome = "Cachoeira";
-         String cidade = "Crucilândia";
-         String cep = "40072562";
-         String endereco = "Ponte Francisca Martins";
-         String idade = "22";
-         String email = "oliviafranc@hotmail.com";
+    public static void main(String[] args) {
+    	
+        String nome = "Olívia";
+        String sobrenome = "Cachoeira";
+        String cidade = "Crucilândia";
+        String cep = "40072562";
+        String endereco = "Ponte Francisca Martins";
+        String idade = "22";
+        String email = "oliviafranc@hotmail.com";
 
         try {
             validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+            System.out.println(consoleOutputString);
         } catch (CadastroInvalidoException e) {
-            assertTrue(consoleOutputString.contains("Cadastro realizado com sucesso"));
-            System.out.println("Cadastro realizado com sucesso" + e.getMessage());
+            for (String mensagemErro : e.getMensagensErro()) {
+                System.out.println(mensagemErro);
+            }
         }
     }
 
