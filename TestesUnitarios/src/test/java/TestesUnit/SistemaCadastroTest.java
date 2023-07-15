@@ -92,7 +92,7 @@ public class SistemaCadastroTest {
     
     @Test
     public void testeCampoCEPComLetra() {
-        // Arrange
+
         String nome = "Hélio";
         String sobrenome = "";
         String cidade = "Castro Alves";
