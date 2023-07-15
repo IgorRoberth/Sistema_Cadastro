@@ -10,8 +10,8 @@ import sistema.SistemaCadastro.CadastroInvalidoException;
 
 public class SistemaCadastroTest {
 	
-		   @SuppressWarnings("unused")
-		   @Test
+		@SuppressWarnings("unused")
+		@Test
 	    public void testeCadastroConcluidoComSucesso() throws CadastroInvalidoException {
 			
 	        String nome = "Roberto";
