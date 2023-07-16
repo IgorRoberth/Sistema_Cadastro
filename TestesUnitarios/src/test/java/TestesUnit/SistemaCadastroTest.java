@@ -9,107 +9,107 @@ import sistema.SistemaCadastro;
 import sistema.SistemaCadastro.CadastroInvalidoException;
 
 public class SistemaCadastroTest {
-	
-		@SuppressWarnings("unused")
-		@Test
-	    public void testeCadastroConcluidoComSucesso() throws CadastroInvalidoException {
-			
-	        String nome = "Roberto";
-	        String sobrenome = "Silveira";
-	        String cidade = "Santa Cruz do Sul";
-	        String cep = "61701-292";
-	        String endereco = "Viela Vitor Silva";
-	        String idade = "28";
-	        String email = "antonio.caseira@gmail.com";
 
-	        ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
-	        PrintStream originalOut = System.out;
-	        System.setOut(new PrintStream(consoleOutput));
-	        SistemaCadastro.main(null);
-	        String consoleOutputString = consoleOutput.toString();
-	        Assert.assertTrue(consoleOutputString.contains("Cadastro realizado com sucesso"));
-	 }
+	@SuppressWarnings("unused")
+	@Test
+	public void testeCadastroConcluidoComSucesso() throws CadastroInvalidoException {
 
-    @Test
-    public void testeCampoNomeVazio() {
+		String nome = "Roberto";
+		String sobrenome = "Silveira";
+		String cidade = "Santa Cruz do Sul";
+		String cep = "61701-292";
+		String endereco = "Viela Vitor Silva";
+		String idade = "28";
+		String email = "antonio.caseira@gmail.com";
 
-        String nome = "";
-        String sobrenome = "Brum";
-        String cidade = "Tremembé";
-        String cep = "41259-387";
-        String endereco = "Viela Yasmin de Assunção";
-        String idade = "28";
-        String email = "roberta.sales@yahoo.com";
+		ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
+		PrintStream originalOut = System.out;
+		System.setOut(new PrintStream(consoleOutput));
+		SistemaCadastro.main(null);
+		String consoleOutputString = consoleOutput.toString();
+		Assert.assertTrue(consoleOutputString.contains("Cadastro realizado com sucesso"));
+	}
 
-        try {
-            SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            Assert.fail("Expected CadastroInvalidoException to be thrown");
-        } catch (SistemaCadastro.CadastroInvalidoException e) {
-            List<String> mensagensErro = e.getMensagensErro();
-            Assert.assertEquals("Nome inválido: campo vazio.", mensagensErro.get(0));
-        }
-    }
-    
-    @Test
-    public void testeCampoNomeComCaracterisInvalidos() {
-        
-        String nome = "Alin$";
-        String sobrenome = "Muniz";
-        String cidade = "Augusto Pestana";
-        String cep = "81129-841";
-        String endereco = "Marginal Marcos Palmeira";
-        String idade = "28";
-        String email = "linemuniz@yahoo.com";
+	@Test
+	public void testeCampoNomeVazio() {
 
-        // Act and Assert
-        try {
-            SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            Assert.fail("Expected CadastroInvalidoException to be thrown");
-        } catch (SistemaCadastro.CadastroInvalidoException e) {
-            List<String> mensagensErro = e.getMensagensErro();
-            Assert.assertEquals("Nome inválido: caracteres inválidos.", mensagensErro.get(0));
-        }
-    }
+		String nome = "";
+		String sobrenome = "Brum";
+		String cidade = "Tremembé";
+		String cep = "41259-387";
+		String endereco = "Viela Yasmin de Assunção";
+		String idade = "28";
+		String email = "roberta.sales@yahoo.com";
 
-    @Test
-    public void testeCampoSobrenomeVazio() {
-        // Arrange
-        String nome = "Hélio";
-        String sobrenome = "";
-        String cidade = "Castro Alves";
-        String cep = "57115213";
-        String endereco = "Joquetina Soares";
-        String idade = "31";
-        String email = "arthurhenrique.peres@yahoo.com";
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+			Assert.fail("Expected CadastroInvalidoException to be thrown");
+		} catch (SistemaCadastro.CadastroInvalidoException e) {
+			List<String> mensagensErro = e.getMensagensErro();
+			Assert.assertEquals("Nome inválido: campo vazio.", mensagensErro.get(0));
+		}
+	}
 
-        // Act and Assert
-        try {
-            SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            Assert.fail("Expected CadastroInvalidoException to be thrown");
-        } catch (SistemaCadastro.CadastroInvalidoException e) {
-            List<String> mensagensErro = e.getMensagensErro();
-            Assert.assertEquals("Sobrenome inválido: campo vazio.", mensagensErro.get(0));
-        }
-    }
-    
-    @Test
-    public void testeCampoCEPComLetra() {
-        // Arrange
-        String nome = "Hélio";
-        String sobrenome = "";
-        String cidade = "Castro Alves";
-        String cep = "57115213";
-        String endereco = "Joquetina Soares";
-        String idade = "31";
-        String email = "arthurhenrique.peres@yahoo.com";
+	@Test
+	public void testeCampoNomeComCaracteresInvalido() {
 
-        // Act and Assert
-        try {
-            SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            Assert.fail("Expected CadastroInvalidoException to be thrown");
-        } catch (SistemaCadastro.CadastroInvalidoException e) {
-            List<String> mensagensErro = e.getMensagensErro();
-            Assert.assertEquals("Sobrenome inválido: campo vazio.", mensagensErro.get(0));
-        }
-    }
+		String nome = "Alin$";
+		String sobrenome = "Muniz";
+		String cidade = "Augusto Pestana";
+		String cep = "81129-841";
+		String endereco = "Marginal Marcos Palmeira";
+		String idade = "28";
+		String email = "linemuniz@yahoo.com";
+
+		// Act and Assert
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+			Assert.fail("Expected CadastroInvalidoException to be thrown");
+		} catch (SistemaCadastro.CadastroInvalidoException e) {
+			List<String> mensagensErro = e.getMensagensErro();
+			Assert.assertEquals("Nome inválido: caracteres inválidos.", mensagensErro.get(0));
+		}
+	}
+
+	@Test
+	public void testeCampoSobrenomeVazio() {
+		// Arrange
+		String nome = "Hélio";
+		String sobrenome = "";
+		String cidade = "Castro Alves";
+		String cep = "57115213";
+		String endereco = "Joquetina Soares";
+		String idade = "31";
+		String email = "arthurhenrique.peres@yahoo.com";
+
+		// Act and Assert
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+			Assert.fail("Expected CadastroInvalidoException to be thrown");
+		} catch (SistemaCadastro.CadastroInvalidoException e) {
+			List<String> mensagensErro = e.getMensagensErro();
+			Assert.assertEquals("Sobrenome inválido: campo vazio.", mensagensErro.get(0));
+		}
+	}
+
+	@Test
+	public void testeCampoCEPComLetra() {
+		// Arrange
+		String nome = "Margarida";
+		String sobrenome = "Dorneles";
+		String cidade = "Rubiácea";
+		String cep = "78126-52A";
+		String endereco = "Rodovia Ofélia Gabeira";
+		String idade = "36";
+		String email = "margaridadornelas@yahoo.com";
+
+		// Act and Assert
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+			Assert.fail("Expected CadastroInvalidoException to be thrown");
+		} catch (SistemaCadastro.CadastroInvalidoException e) {
+			List<String> mensagensErro = e.getMensagensErro();
+			Assert.assertEquals("CEP inválido: caracteres inválidos.", mensagensErro.get(0));
+		}
+	}
 }
