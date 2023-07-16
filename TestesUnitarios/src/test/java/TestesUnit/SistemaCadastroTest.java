@@ -106,7 +106,7 @@ public class SistemaCadastroTest {
 			Assert.fail("Expected CadastroInvalidoException to be thrown");
 		} catch (SistemaCadastro.CadastroInvalidoException e) {
 			List<String> mensagensErro = e.getMensagensErro();
-			Assert.assertEquals("Sobrenome inválido: campo vazio.", mensagensErro.get(0));
+			Assert.assertEquals("CEP inválido: caracteres inválidos.", mensagensErro.get(0));
 		}
 	}
 }
