@@ -7,93 +7,93 @@ public class SistemaCadastro {
 
     public static String consoleOutputString = "Cadastro realizado com sucesso";
 
-    public static void main(String[] args) {
-    	
-        String nome = "Olívia";
-        String sobrenome = "Cachoeira";
-        String cidade = "Crucilândia";
-        String cep = "40072562";
-        String endereco = "Ponte Francisca Martins";
-        String idade = "22";
-        String email = "oliviafranc@hotmail.com";
+	public static void main(String[] args) {
 
-        try {
-            validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            System.out.println(consoleOutputString);
-        } catch (CadastroInvalidoException e) {
-            for (String mensagemErro : e.getMensagensErro()) {
-                System.out.println(mensagemErro);
-            }
-        }
-    }
+		String nome = "Olívia";
+		String sobrenome = "Cachoeira";
+		String cidade = "Crucilândia";
+		String cep = "40072562";
+		String endereco = "Ponte Francisca Martins";
+		String idade = "22";
+		String email = "oliviafranc@hotmail.com";
 
-    public static void validarCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
-                                       String idade, String email) throws CadastroInvalidoException {
-        List<String> mensagensErro = new ArrayList<>();
+		try {
+			validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+			exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+			System.out.println(consoleOutputString);
+		} catch (CadastroInvalidoException e) {
+			for (String mensagemErro : e.getMensagensErro()) {
+				System.out.println(mensagemErro);
+			}
+		}
+	}
 
-        validarCampo(nome, "Nome", mensagensErro);
-        validarCampo(sobrenome, "Sobrenome", mensagensErro);
-        validarCampo(cidade, "Cidade", mensagensErro);
-        validarCampo(cep, "CEP", mensagensErro);
-        validarCampo(endereco, "Endereço", mensagensErro);
-        validarCampo(idade, "Idade", mensagensErro);
-        validarCampo(email, "E-mail", mensagensErro);
+	public static void validarCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
+			String idade, String email) throws CadastroInvalidoException {
+		List<String> mensagensErro = new ArrayList<>();
 
-        if (!mensagensErro.isEmpty()) {
-            throw new CadastroInvalidoException(mensagensErro);
-        }
-    }
+		validarCampo(nome, "Nome", mensagensErro);
+		validarCampo(sobrenome, "Sobrenome", mensagensErro);
+		validarCampo(cidade, "Cidade", mensagensErro);
+		validarCampo(cep, "CEP", mensagensErro);
+		validarCampo(endereco, "Endereço", mensagensErro);
+		validarCampo(idade, "Idade", mensagensErro);
+		validarCampo(email, "E-mail", mensagensErro);
 
-    public static void validarCampo(String campo, String nomeCampo, List<String> mensagensErro) {
-        if (campo.trim().isEmpty()) {
-            mensagensErro.add(nomeCampo + " inválido: campo vazio.");
-        } else {
-            switch (nomeCampo) {
-                case "Nome":
-                case "Sobrenome":
-                case "Cidade":
-                case "Endereço":
-                    if (!campo.matches("[\\p{L}\\s]+")) {
-                        mensagensErro.add(nomeCampo + " inválido: caracteres inválidos.");
-                    }
-                    break;
-                case "CEP":
-                case "Idade":
-                    if (!campo.matches("\\d+")) {
-                        mensagensErro.add(nomeCampo + " inválido: caracteres inválidos.");
-                    }
-                    break;
-                case "E-mail":
-                    if (!campo.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]+")) {
-                        mensagensErro.add(nomeCampo + " inválido: formato inválido.");
-                    }
-                    break;
-            }
-        }
-    }
+		if (!mensagensErro.isEmpty()) {
+			throw new CadastroInvalidoException(mensagensErro);
+		}
+	}
 
-    public static void exibirCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
-                                      String idade, String email) {
-        System.out.println("Cadastro realizado com sucesso:");
-        System.out.println("Nome: " + nome);
-        System.out.println("Sobrenome: " + sobrenome);
-        System.out.println("Cidade: " + cidade);
-        System.out.println("CEP: " + cep);
-        System.out.println("Endereço: " + endereco);
-        System.out.println("Idade: " + idade);
-        System.out.println("E-mail: " + email);
-    }
+	public static void validarCampo(String campo, String nomeCampo, List<String> mensagensErro) {
+		if (campo.trim().isEmpty()) {
+			mensagensErro.add(nomeCampo + " inválido: campo vazio.");
+		} else {
+			switch (nomeCampo) {
+			case "Nome":
+			case "Sobrenome":
+			case "Cidade":
+			case "Endereço":
+				if (!campo.matches("[\\p{L}\\s]+")) {
+					mensagensErro.add(nomeCampo + " inválido: caracteres inválidos.");
+				}
+				break;
+			case "CEP":
+			case "Idade":
+				if (!campo.matches("\\d+")) {
+					mensagensErro.add(nomeCampo + " inválido: caracteres inválidos.");
+				}
+				break;
+			case "E-mail":
+				if (!campo.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]+")) {
+					mensagensErro.add(nomeCampo + " inválido: formato inválido.");
+				}
+				break;
+			}
+		}
+	}
 
-    public static class CadastroInvalidoException extends Exception {
-        private List<String> mensagensErro;
+	public static void exibirCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
+			String idade, String email) {
+		System.out.println("Nome: " + nome);
+		System.out.println("Sobrenome: " + sobrenome);
+		System.out.println("Cidade: " + cidade);
+		System.out.println("CEP: " + cep);
+		System.out.println("Endereço: " + endereco);
+		System.out.println("Idade: " + idade);
+		System.out.println("E-mail: " + email);
+	}
 
-        public CadastroInvalidoException(List<String> mensagensErro) {
-            this.mensagensErro = mensagensErro;
-        }
+	@SuppressWarnings("serial")
+	public static class CadastroInvalidoException extends Exception {
+		private List<String> mensagensErro;
 
-        public List<String> getMensagensErro() {
-            return mensagensErro;
-        }
-    }
+		public CadastroInvalidoException(List<String> mensagensErro) {
+			this.mensagensErro = mensagensErro;
+		}
+
+		public List<String> getMensagensErro() {
+			return mensagensErro;
+		}
+	}
 }
