@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SistemaCadastro {
 
     private String consoleOutputString = "Cadastro realizado com sucesso";
