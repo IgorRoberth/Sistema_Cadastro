@@ -171,7 +171,7 @@ public class SistemaCadastro {
                 .build();
 
         try {
-            sistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+            SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             sistemaCadastro.exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             System.out.println(sistemaCadastro.getConsoleOutputString());
         } catch (CadastroInvalidoException e) {
