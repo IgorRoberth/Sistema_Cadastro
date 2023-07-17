@@ -15,25 +15,33 @@ import sistema.SistemaCadastro.CadastroInvalidoException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SistemaCadastroTest {
-	
+
+	private CadastroExistenteVerifier cadastroExistenteVerifier;
+	private SistemaCadastro sistemaCadastro;
+
 	@SuppressWarnings("unused")
 	@Test
-	public void teste01CadastroConcluidoComSucesso() throws CadastroInvalidoException {
-
+	public void teste01CadastroConcluidoComSucesso() throws CadastroInvalidoException, CadastroExistenteException {
 		String nome = "Roberto";
 		String sobrenome = "Silveira";
 		String cidade = "Santa Cruz do Sul";
 		String cep = "61701-292";
 		String endereco = "Viela Vitor Silva";
 		String idade = "28";
-		String email = "antonio.caseira@gmail.com";
+		String email = "roberto.silveira@gmail.com";
 
-		ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
-		PrintStream originalOut = System.out;
-		System.setOut(new PrintStream(consoleOutput));
-		SistemaCadastro.main(null);
-		String consoleOutputString = consoleOutput.toString();
-		Assert.assertTrue(consoleOutputString.contains("Cadastro realizado com sucesso"));
+		CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
+		Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(false);
+		SistemaCadastro sistemaCadastro = SistemaCadastro.SistemaCadastroBuilder.builder()
+				.cadastroExistenteVerifier(cadastroExistenteVerifier).build();
+
+		sistemaCadastro.cadastrarUsuario(email);
+
+		Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getConsoleOutputString());
+		if ("Cadastro realizado com sucesso".equals(sistemaCadastro.getConsoleOutputString())) {
+			Assert.assertEquals("E-mail de confirmação enviado para roberto.silveira@gmail.com",
+					sistemaCadastro.getUltimaMensagemEnvio());
+		}
 	}
 
 	@Test
@@ -115,40 +123,75 @@ public class SistemaCadastroTest {
 			Assert.assertEquals("CEP inválido: caracteres inválidos.", mensagensErro.get(0));
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	@Test
 	public void teste06CadastroUsuarioExistente() {
-		
+
 		SistemaCadastro SistemaCadastroBuilder;
+
+		String nome = "Roberto";
+		String sobrenome = "Silveira";
+		String cidade = "Santa Cruz do Sul";
+		String cep = "61701-292";
+		String endereco = "Viela Vitor Silva";
+		String idade = "28";
+		String email = "antonio.caseira@gmail.com";
+
+		// Cria um mock do CadastroExistenteVerifier
+		CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
+
+		// Define o comportamento do mock para retornar true, indicando que o usuário já
+		// está cadastrado
+		Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(true);
+
+		// Cria uma instância de SistemaCadastro usando o Builder
+		SistemaCadastro sistemaCadastro = new SistemaCadastro();
+		sistemaCadastro.setCadastroExistenteVerifier(cadastroExistenteVerifier);
+
+		// Executa o teste e captura a saída do console
+		ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
+		PrintStream originalOut = System.out;
+		System.setOut(new PrintStream(consoleOutput));
+		try {
+			sistemaCadastro.cadastrarUsuario(email);
+		} catch (CadastroExistenteException e) {
+			Assert.assertEquals("Cliente já está cadastrado no sistema.", e.getMessage());
+		}
+		System.setOut(originalOut);
+	}
+
+	public void setup() {
+		cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
+		Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(Mockito.anyString())).thenReturn(false);
+		sistemaCadastro = SistemaCadastro.SistemaCadastroBuilder.builder()
+				.cadastroExistenteVerifier(cadastroExistenteVerifier).build();
+	}
+
+	@Test
+	public void teste07ValidarEnvioDeEmailDeConfirmacao() throws Exception {
 		
-	    String nome = "Roberto";
-	    String sobrenome = "Silveira";
-	    String cidade = "Santa Cruz do Sul";
-	    String cep = "61701-292";
-	    String endereco = "Viela Vitor Silva";
-	    String idade = "28";
-	    String email = "antonio.caseira@gmail.com";
+		String nome = "Antonio";
+		String sobrenome = "Silva";
+		String cidade = "Blueman";
+		String cep = "12345678";
+		String endereco = "Rua Carussica";
+		String idade = "30";
+		String email = "antonio.caseira@gmail.com";
+		
+		String mensagemEsperada = "E-mail de confirmação enviado para " + email;
 
-	    // Cria um mock do CadastroExistenteVerifier
-	    CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
-	    
-	    // Define o comportamento do mock para retornar true, indicando que o usuário já está cadastrado
-	    Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(true);
+		CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
+		Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(false);
 
-	    // Cria uma instância de SistemaCadastro usando o Builder
-	    SistemaCadastro sistemaCadastro = new SistemaCadastro();
-	    sistemaCadastro.setCadastroExistenteVerifier(cadastroExistenteVerifier);
+		SistemaCadastro sistemaCadastro = SistemaCadastro.SistemaCadastroBuilder.builder()
+				.cadastroExistenteVerifier(cadastroExistenteVerifier).build();
 
-	    // Executa o teste e captura a saída do console
-	    ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
-	    PrintStream originalOut = System.out;
-	    System.setOut(new PrintStream(consoleOutput));
-	    try {
-	        sistemaCadastro.cadastrarUsuario(email);
-	    } catch (CadastroExistenteException e) {
-	        Assert.assertEquals("Cliente já está cadastrado no sistema.", e.getMessage());
-	    }
-	    System.setOut(originalOut);
+		try {
+			sistemaCadastro.cadastrarUsuario(email);
+			Assert.assertEquals(mensagemEsperada, sistemaCadastro.getUltimaMensagemEnvio());
+		} catch (CadastroExistenteException e) {
+			Assert.fail("Não era esperada uma exceção de CadastroExistenteException");
+		}
 	}
 }
