@@ -6,15 +6,11 @@ import org.mockito.Mockito;
 
 public class SistemaCadastro {
 
-    private SistemaCadastro() {
-  
-    }
     private String consoleOutputString = "Cadastro realizado com sucesso";
     private List<String> usuariosCadastrados = new ArrayList<>();
     private CadastroExistenteVerifier cadastroExistenteVerifier;
 
-    public static Builder builder() {
-        return new Builder();
+    public SistemaCadastro() {
     }
 
     public void setCadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
@@ -29,7 +25,7 @@ public class SistemaCadastro {
     }
 
     public static void validarCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
-                                String idade, String email) throws CadastroInvalidoException {
+                                       String idade, String email) throws CadastroInvalidoException {
         List<String> mensagensErro = new ArrayList<>();
 
         validarCampo(nome, "Nome", mensagensErro);
@@ -84,43 +80,19 @@ public class SistemaCadastro {
         System.out.println("E-mail: " + email);
     }
 
-    @SuppressWarnings("static-access")
-	public static void main(String[] args) {
-        String nome = "Olívia";
-        String sobrenome = "Cachoeira";
-        String cidade = "Crucilândia";
-        String cep = "40072562";
-        String endereco = "Ponte Francisca Martins";
-        String idade = "22";
-        String email = "oliviafranc@hotmail.com";
-
-        CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
-        Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(true);
-
-        SistemaCadastro sistemaCadastro = SistemaCadastro.builder()
-                .cadastroExistenteVerifier(cadastroExistenteVerifier)
-                .build();
-
-        try {
-            sistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            sistemaCadastro.exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-            System.out.println(sistemaCadastro.consoleOutputString);
-        } catch (CadastroInvalidoException e) {
-            for (String mensagemErro : e.getMensagensErro()) {
-                System.out.println(mensagemErro);
-            }
-        }
-    }
-
-    public static class Builder {
+    public static class SistemaCadastroBuilder {
         private SistemaCadastro sistemaCadastro;
         private CadastroExistenteVerifier cadastroExistenteVerifier;
 
-        private Builder() {
+        private SistemaCadastroBuilder() {
             sistemaCadastro = new SistemaCadastro();
         }
 
-        public Builder cadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
+        public static SistemaCadastroBuilder builder() {
+            return new SistemaCadastroBuilder();
+        }
+
+        public SistemaCadastroBuilder cadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
             this.cadastroExistenteVerifier = cadastroExistenteVerifier;
             return this;
         }
@@ -136,14 +108,14 @@ public class SistemaCadastro {
     }
 
     @SuppressWarnings("serial")
-	public static class CadastroExistenteException extends Exception {
+    public static class CadastroExistenteException extends Exception {
         public CadastroExistenteException(String message) {
             super(message);
         }
     }
 
     @SuppressWarnings("serial")
-	public static class CadastroInvalidoException extends Exception {
+    public static class CadastroInvalidoException extends Exception {
         private List<String> mensagensErro;
 
         public CadastroInvalidoException(List<String> mensagensErro) {
@@ -152,6 +124,33 @@ public class SistemaCadastro {
 
         public List<String> getMensagensErro() {
             return mensagensErro;
+        }
+    }
+
+    public static void main(String[] args) {
+        String nome = "Olívia";
+        String sobrenome = "Cachoeira";
+        String cidade = "Crucilândia";
+        String cep = "40072562";
+        String endereco = "Ponte Francisca Martins";
+        String idade = "22";
+        String email = "oliviafranc@hotmail.com";
+
+        CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
+        Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(true);
+
+        SistemaCadastro sistemaCadastro = SistemaCadastro.SistemaCadastroBuilder.builder()
+                .cadastroExistenteVerifier(cadastroExistenteVerifier)
+                .build();
+
+        try {
+            sistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+            sistemaCadastro.exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
+            System.out.println(sistemaCadastro.consoleOutputString);
+        } catch (CadastroInvalidoException e) {
+            for (String mensagemErro : e.getMensagensErro()) {
+                System.out.println(mensagemErro);
+            }
         }
     }
 }
