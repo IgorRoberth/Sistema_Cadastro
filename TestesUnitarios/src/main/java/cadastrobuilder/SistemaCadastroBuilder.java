@@ -4,6 +4,7 @@ import sistema.SistemaCadastro;
 import sistema.SistemaCadastro.CadastroExistenteVerifier;
 
 public class SistemaCadastroBuilder {
+
     private SistemaCadastro sistemaCadastro;
     private CadastroExistenteVerifier cadastroExistenteVerifier;
 
@@ -17,6 +18,11 @@ public class SistemaCadastroBuilder {
 
     public SistemaCadastroBuilder cadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
         this.cadastroExistenteVerifier = cadastroExistenteVerifier;
+        return this;
+    }
+
+    public SistemaCadastroBuilder consoleOutputString(String consoleOutputString) {
+        sistemaCadastro.setConsoleOutputString(consoleOutputString);
         return this;
     }
 

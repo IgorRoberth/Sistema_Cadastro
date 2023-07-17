@@ -1,7 +1,6 @@
 package mockitoutils;
 
 import org.mockito.Mockito;
-
 import sistema.SistemaCadastro.CadastroExistenteVerifier;
 
 public class MockitoUtils {
