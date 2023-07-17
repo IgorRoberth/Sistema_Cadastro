@@ -1,4 +1,4 @@
-package TestesUnit;
+package testesunit;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -119,6 +119,9 @@ public class SistemaCadastroTest {
 	@SuppressWarnings("unused")
 	@Test
 	public void teste06CadastroUsuarioExistente() {
+		
+		SistemaCadastro SistemaCadastroBuilder;
+		
 	    String nome = "Roberto";
 	    String sobrenome = "Silveira";
 	    String cidade = "Santa Cruz do Sul";
@@ -134,9 +137,8 @@ public class SistemaCadastroTest {
 	    Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(true);
 
 	    // Cria uma instância de SistemaCadastro usando o Builder
-	    SistemaCadastro sistemaCadastro = SistemaCadastro.builder()
-	            .cadastroExistenteVerifier(cadastroExistenteVerifier)
-	            .build();
+	    SistemaCadastro sistemaCadastro = new SistemaCadastro();
+	    sistemaCadastro.setCadastroExistenteVerifier(cadastroExistenteVerifier);
 
 	    // Executa o teste e captura a saída do console
 	    ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
@@ -145,7 +147,6 @@ public class SistemaCadastroTest {
 	    try {
 	        sistemaCadastro.cadastrarUsuario(email);
 	    } catch (CadastroExistenteException e) {
-	        // Verifica se a mensagem de erro é exibida corretamente
 	        Assert.assertEquals("Cliente já está cadastrado no sistema.", e.getMessage());
 	    }
 	    System.setOut(originalOut);

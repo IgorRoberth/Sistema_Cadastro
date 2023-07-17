@@ -1,4 +1,4 @@
-package TestesUnit;
+package testesunit;
 
 import java.util.Locale;
 
