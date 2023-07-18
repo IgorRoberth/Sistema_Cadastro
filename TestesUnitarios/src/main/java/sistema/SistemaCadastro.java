@@ -8,7 +8,7 @@ import cadastroexception.SistemaCadastroException;
 
 public class SistemaCadastro {
 
-	private String consoleOutputString = "Cadastro realizado com sucesso";
+	private String mensagemCadastroConcluido = "Cadastro realizado com sucesso";
 	private List<String> usuariosCadastrados = new ArrayList<>();
 	private String mensagemConfirmacao;
 	private VerificarCadastro verificarCadastroExistente;
@@ -26,7 +26,7 @@ public class SistemaCadastro {
 			throw new SistemaCadastroException(List.of("Usuário já está cadastrado no sistema: "));
 	}
 		usuariosCadastrados.add(email);
-		consoleOutputString = "Cadastro realizado com sucesso";
+		mensagemCadastroConcluido = "Cadastro realizado com sucesso";
 		enviarEmailConfirmacao(email);
 	}
 
@@ -39,12 +39,12 @@ public class SistemaCadastro {
 		return mensagemConfirmacao;
 	}
 
-	public String getConsoleOutputString() {
-		return consoleOutputString;
+	public String getMensagemCadastroConcluido() {
+		return mensagemCadastroConcluido;
 	}
 
-	public void setConsoleOutputString(String consoleOutputString) {
-		this.consoleOutputString = consoleOutputString;
+	public void setMensagemCadastroConcluido(String mensagemCadastroConcluido) {
+		this.mensagemCadastroConcluido = mensagemCadastroConcluido;
 	}
 
 	public static void validarCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
@@ -104,6 +104,7 @@ public class SistemaCadastro {
 	}
 
 	public static void main(String[] args) {
+		
 		String nome = "Olívia";
 		String sobrenome = "Cachoeira";
 		String cidade = "Crucilândia";
@@ -118,7 +119,7 @@ public class SistemaCadastro {
 		try {
 			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
 			sistemaCadastro.exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
-			System.out.println(sistemaCadastro.getConsoleOutputString());
+			System.out.println(sistemaCadastro.getMensagemCadastroConcluido());
 		} catch (SistemaCadastroException e) {
 			for (String mensagemErro : e.getMensagensErro()) {
 				System.out.println(mensagemErro);

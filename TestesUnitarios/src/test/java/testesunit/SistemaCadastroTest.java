@@ -25,26 +25,41 @@ public class SistemaCadastroTest {
 	@Before
 	public void setup() {
 
-	    // Cria uma instância simulada de VerificarCadastro usando o método criarVerificacaoDeCadastro()
+		// Cria uma instância simulada de VerificarCadastro usando o método
+		// criarVerificacaoDeCadastro()
 		VerificarCadastro verificarCadastro = criarVerificacaoDeCadastro();
-		/* Configura o comportamento da instância simulada para retornar falso quando 
-		 * o método verificarCadastroExistente() for chamado com qualquer argumento de string
+		/*
+		 * Configura o comportamento da instância simulada para retornar falso quando o
+		 * método verificarCadastroExistente() for chamado com qualquer argumento de
+		 * string
 		 */
 		Mockito.when(verificarCadastro.verificarCadastroExistente(Mockito.anyString())).thenReturn(false);
-		// Cria uma instância de SistemaCadastroBuilder com a configuração do verificarCadastroExistente
+		// Cria uma instância de SistemaCadastroBuilder com a configuração do
+		// verificarCadastroExistente
 		SistemaCadastroBuilder sistemaCadastroBuilder = SistemaCadastroBuilder.builder()
 				.verificarCadastroExistente(verificarCadastro);
-		// Constrói uma instância de SistemaCadastro com base na configuração definida no builder
+		// Constrói uma instância de SistemaCadastro com base na configuração definida
+		// no builder
 		sistemaCadastro = sistemaCadastroBuilder.build();
 	}
 
 	@Test
 	public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
-		String email = "roberto.silveira@gmail.com";
-		sistemaCadastro.cadastrarUsuario(email);
 
-     	Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getConsoleOutputString());
+		String nome = "Roberto";
+		String sobrenome = "Silveira";
+		String cidade = "Brasilandia";
+		String cep = "41259-387";
+		String endereco = "Viela Yasmin de Assunção";
+		String idade = "28";
+		String email = "robertosilveira@gmail.com";
+
+		sistemaCadastro.cadastrarUsuario(email);
+		Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getMensagemCadastroConcluido());
 		Assert.assertEquals("E-mail de confirmação enviado para " + email, sistemaCadastro.getMensagemConfirmacao());
+		System.out.println("Nome: " + nome + "\nSobrenome: " + sobrenome + "\nCidade: " + cidade + "\nCEP: " + cep
+				+ "\nEndereço: " + endereco + "\nIdade: " + idade + "\nEmail: " + email);
+
 	}
 
 	@Test
@@ -87,7 +102,7 @@ public class SistemaCadastroTest {
 
 	@Test
 	public void teste04CampoSobrenomeVazio() {
-		
+
 		String nome = "Hélio";
 		String sobrenome = "";
 		String cidade = "Castro Alves";
@@ -125,6 +140,7 @@ public class SistemaCadastroTest {
 
 	@Test
 	public void teste06CadastroUsuarioExistente() throws SistemaCadastroException {
+		
 		String email = "madalena@gmail.com";
 		String usuarioCadastrado = "Usuário já está cadastrado no sistema: ";
 
