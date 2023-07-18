@@ -1,12 +1,12 @@
 package cadastrobuilder;
 
+import cadastrocliente.VerificarCadastro;
 import sistema.SistemaCadastro;
-import sistema.SistemaCadastro.CadastroExistenteVerifier;
 
 public class SistemaCadastroBuilder {
 
-    private SistemaCadastro sistemaCadastro;
-    private CadastroExistenteVerifier cadastroExistenteVerifier;
+    private final SistemaCadastro sistemaCadastro;
+    private VerificarCadastro verificarCadastroExistente;
 
     private SistemaCadastroBuilder() {
         sistemaCadastro = new SistemaCadastro();
@@ -16,8 +16,8 @@ public class SistemaCadastroBuilder {
         return new SistemaCadastroBuilder();
     }
 
-    public SistemaCadastroBuilder cadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
-        this.cadastroExistenteVerifier = cadastroExistenteVerifier;
+    public SistemaCadastroBuilder verificarCadastroExistente(VerificarCadastro cadastroExistente) {
+        this.verificarCadastroExistente = cadastroExistente;
         return this;
     }
 
@@ -27,7 +27,7 @@ public class SistemaCadastroBuilder {
     }
 
     public SistemaCadastro build() {
-        sistemaCadastro.setCadastroExistenteVerifier(cadastroExistenteVerifier);
+        sistemaCadastro.setVerificarCadastro(verificarCadastroExistente);
         return sistemaCadastro;
     }
 }
