@@ -1,11 +1,12 @@
 package mockitoutils;
 
 import org.mockito.Mockito;
-import sistema.SistemaCadastro.CadastroExistenteVerifier;
+
+import cadastrocliente.VerificarCadastro;
 
 public class MockitoUtils {
-  
-	public static CadastroExistenteVerifier createMockCadastroExistenteVerifier() {
-	return (CadastroExistenteVerifier) Mockito.mock(CadastroExistenteVerifier.class);
+
+    public static VerificarCadastro criarVerificacaoDeCadastro() {
+        return Mockito.mock(VerificarCadastro.class);
     }
 }
