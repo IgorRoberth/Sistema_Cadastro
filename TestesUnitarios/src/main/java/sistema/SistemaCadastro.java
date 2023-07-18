@@ -24,7 +24,7 @@ public class SistemaCadastro {
 	public void cadastrarUsuario(String email) throws SistemaCadastroException {
 		if (verificarCadastroExistente != null && verificarCadastroExistente.verificarCadastroExistente(email)) {
 			throw new SistemaCadastroException(List.of("Usuário já está cadastrado no sistema: "));
-		}
+	}
 		usuariosCadastrados.add(email);
 		consoleOutputString = "Cadastro realizado com sucesso";
 		enviarEmailConfirmacao(email);
