@@ -3,24 +3,27 @@ package sistema;
 import java.util.ArrayList;
 import java.util.List;
 import org.mockito.Mockito;
+import cadastrocliente.VerificarCadastro;
+import cadastroexception.SistemaCadastroException;
 
 public class SistemaCadastro {
 
     private String consoleOutputString = "Cadastro realizado com sucesso";
     private List<String> usuariosCadastrados = new ArrayList<>();
-    private CadastroExistenteVerifier cadastroExistenteVerifier;
-    private String ultimaMensagemEnvio;
+    private String mensagemConfirmacao;
+    private VerificarCadastro verificarCadastroExistente;
+	static SistemaCadastro sistemaCadastro = new SistemaCadastro();
 
     public SistemaCadastro() {
     }
 
-    public void setCadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
-        this.cadastroExistenteVerifier = cadastroExistenteVerifier;
+    public void setVerificarCadastro(VerificarCadastro verificarCadastro) {
+        this.verificarCadastroExistente = verificarCadastro;
     }
 
-    public void cadastrarUsuario(String email) throws CadastroExistenteException {
-        if (cadastroExistenteVerifier != null && cadastroExistenteVerifier.verificarCadastroExistente(email)) {
-            throw new CadastroExistenteException("Cliente já está cadastrado no sistema.");
+    public void cadastrarUsuario(String email) throws SistemaCadastroException {
+        if (verificarCadastroExistente != null && verificarCadastroExistente.verificarCadastroExistente(email)) {
+            throw new SistemaCadastroException(List.of("Usuário já está cadastrado no sistema: "));
         }
         usuariosCadastrados.add(email);
         consoleOutputString = "Cadastro realizado com sucesso";
@@ -28,12 +31,12 @@ public class SistemaCadastro {
     }
 
     private void enviarEmailConfirmacao(String email) {
-        ultimaMensagemEnvio = "E-mail de confirmação enviado para " + email;
-        System.out.println(ultimaMensagemEnvio);
+        mensagemConfirmacao = "E-mail de confirmação enviado para " + email;
+        System.out.println(mensagemConfirmacao);
     }
 
-    public String getUltimaMensagemEnvio() {
-        return ultimaMensagemEnvio;
+    public String getMensagemConfirmacao() {
+        return mensagemConfirmacao;
     }
 
     public String getConsoleOutputString() {
@@ -43,9 +46,10 @@ public class SistemaCadastro {
     public void setConsoleOutputString(String consoleOutputString) {
         this.consoleOutputString = consoleOutputString;
     }
+    
 
     public static void validarCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
-                                String idade, String email) throws CadastroInvalidoException {
+                                String idade, String email) throws SistemaCadastroException {
         List<String> mensagensErro = new ArrayList<>();
 
         validarCampo(nome, "Nome", mensagensErro);
@@ -57,7 +61,7 @@ public class SistemaCadastro {
         validarCampo(email, "E-mail", mensagensErro);
 
         if (!mensagensErro.isEmpty()) {
-            throw new CadastroInvalidoException(mensagensErro);
+            throw new SistemaCadastroException(mensagensErro);
         }
     }
 
@@ -100,60 +104,6 @@ public class SistemaCadastro {
         System.out.println("E-mail: " + email);
     }
 
-    public static class SistemaCadastroBuilder {
-        private SistemaCadastro sistemaCadastro;
-        private CadastroExistenteVerifier cadastroExistenteVerifier;
-        private String consoleOutputString;
-
-        private SistemaCadastroBuilder() {
-            sistemaCadastro = new SistemaCadastro();
-        }
-
-        public static SistemaCadastroBuilder builder() {
-            return new SistemaCadastroBuilder();
-        }
-
-        public SistemaCadastroBuilder cadastroExistenteVerifier(CadastroExistenteVerifier cadastroExistenteVerifier) {
-            this.cadastroExistenteVerifier = cadastroExistenteVerifier;
-            return this;
-        }
-
-        public SistemaCadastroBuilder consoleOutputString(String consoleOutputString) {
-            this.consoleOutputString = consoleOutputString;
-            return this;
-        }
-
-        public SistemaCadastro build() {
-            sistemaCadastro.setCadastroExistenteVerifier(cadastroExistenteVerifier);
-            sistemaCadastro.setConsoleOutputString(consoleOutputString);
-            return sistemaCadastro;
-        }
-    }
-
-    public interface CadastroExistenteVerifier {
-        boolean verificarCadastroExistente(String email);
-    }
-
-    @SuppressWarnings("serial")
-    public static class CadastroExistenteException extends Exception {
-        public CadastroExistenteException(String message) {
-            super(message);
-        }
-    }
-
-    @SuppressWarnings("serial")
-    public static class CadastroInvalidoException extends Exception {
-        private List<String> mensagensErro;
-
-        public CadastroInvalidoException(List<String> mensagensErro) {
-            this.mensagensErro = mensagensErro;
-        }
-
-        public List<String> getMensagensErro() {
-            return mensagensErro;
-        }
-    }
-
     public static void main(String[] args) {
         String nome = "Olívia";
         String sobrenome = "Cachoeira";
@@ -163,18 +113,14 @@ public class SistemaCadastro {
         String idade = "22";
         String email = "oliviafranc@hotmail.com";
 
-        CadastroExistenteVerifier cadastroExistenteVerifier = Mockito.mock(CadastroExistenteVerifier.class);
-        Mockito.when(cadastroExistenteVerifier.verificarCadastroExistente(email)).thenReturn(true);
-
-        SistemaCadastro sistemaCadastro = SistemaCadastro.SistemaCadastroBuilder.builder()
-                .cadastroExistenteVerifier(cadastroExistenteVerifier)
-                .build();
+        VerificarCadastro verificarCadastro = Mockito.mock(VerificarCadastro.class);
+        Mockito.when(verificarCadastro.verificarCadastroExistente(email)).thenReturn(true);
 
         try {
             SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             sistemaCadastro.exibirCadastro(nome, sobrenome, cidade, cep, endereco, idade, email);
             System.out.println(sistemaCadastro.getConsoleOutputString());
-        } catch (CadastroInvalidoException e) {
+        } catch (SistemaCadastroException e) {
             for (String mensagemErro : e.getMensagensErro()) {
                 System.out.println(mensagemErro);
             }
