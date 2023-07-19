@@ -14,13 +14,14 @@ public class LoginSenhaTest {
 
 	@Test
 	public void teste01ValidarLoginCorreto() throws SistemaCadastroException {
-		// Arrange
+
 		SistemaCadastro sistemaCadastro = new SistemaCadastro();
+		// Cenario
 		sistemaCadastro.setLogin("rbt12");
 		sistemaCadastro.setSenha("12345");
 		sistemaCadastro.autenticarUsuario("rbt12", "12345");
 
-		// Act & Assert
+		// Verificacao e acao
 		try {
 			sistemaCadastro.autenticarUsuario("rbt12", "12345");
 			System.out.println("Usuário autenticado com sucesso.");
@@ -31,12 +32,11 @@ public class LoginSenhaTest {
 
 	@Test
 	public void teste02ValidarLoginIncorreto() throws SistemaCadastroException {
-		// Arrange
+		// Cenario
 		SistemaCadastro sistemaCadastro = new SistemaCadastro();
 		sistemaCadastro.setLogin("carla06");
 		sistemaCadastro.setSenha("12345");
-
-		// Act & Assert
+		// Acao e verificacao
 		try {
 			sistemaCadastro.autenticarUsuario("carla05", "12345");
 			Assert.fail("Expected SistemaCadastroException");
@@ -47,12 +47,12 @@ public class LoginSenhaTest {
 
 	@Test
 	public void teste03ValidarSenhaCorreta() {
-		// Arrange
+		// Cenario
 		SistemaCadastro sistemaCadastro = new SistemaCadastro();
 		sistemaCadastro.setLogin("joaolucas");
 		sistemaCadastro.setSenha("12345");
 
-		// Act & Assert
+		// acao e verificacao
 		try {
 			sistemaCadastro.autenticarUsuario("joaolucas", "12345");
 			System.out.println("Usuário autenticado com sucesso.");
@@ -63,12 +63,12 @@ public class LoginSenhaTest {
 
 	@Test
 	public void teste04ValidarSenhaIncorreta() throws SistemaCadastroException {
-		// Arrange
+		// Cenario
 		SistemaCadastro sistemaCadastro = new SistemaCadastro();
 		sistemaCadastro.setLogin("josed");
 		sistemaCadastro.setSenha("12345");
 
-		// Act & Assert
+		// acao e verificacao
 		try {
 			sistemaCadastro.autenticarUsuario("josed", "12346");
 			Assert.fail("Expected SistemaCadastroException");
@@ -79,22 +79,45 @@ public class LoginSenhaTest {
 
 	@Test
 	public void teste05RecuperarSenha() throws SistemaCadastroException {
-		// Arrange
+		// cenario
 		SistemaCadastro sistemaCadastro = new SistemaCadastro();
 		String email = "gustavo.moniz@bol.com.br";
 		String login = "gutomoniz";
 		String senha = "12345";
 
-		// Cria um mock da interface EnviarEmail
+		// Ação cria um mock da interface EnviarEmail
 		EnviarEmail enviarEmailMock = Mockito.mock(EnviarEmail.class);
 		sistemaCadastro.setEnviarEmail(enviarEmailMock);
 
-		// Act
+		// verificacao
 		sistemaCadastro.cadastrarUsuario(email, login, senha); // Cadastra o usuário antes de recuperar a senha
 		sistemaCadastro.recuperarSenha(email);
 
-		// Assert
 		Mockito.verify(enviarEmailMock, Mockito.times(1)).enviarEmail(Mockito.eq(email), Mockito.anyString(),
+				Mockito.anyString());
+	}
+
+	@Test
+	public void teste06RecuperarSenhaSemCadastro() {
+		// Cenário
+		SistemaCadastro sistemaCadastro = new SistemaCadastro();
+		String email = "gustavo.moniz@bol.com.br";
+		final String naoCadastrado = "E-mail não cadastrado.";
+
+		// Ação: cria um mock da interface EnviarEmail
+		EnviarEmail enviarEmailMock = Mockito.mock(EnviarEmail.class);
+		sistemaCadastro.setEnviarEmail(enviarEmailMock);
+
+		// Verificação
+		try {
+			sistemaCadastro.recuperarSenha(email);
+			Assert.fail("Esperava-se que uma exceção fosse lançada.");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(naoCadastrado, e.getMensagensErro().get(0));
+		}
+
+		// Verifica se o método enviarEmail do objeto enviarEmailMock não foi chamado
+		Mockito.verify(enviarEmailMock, Mockito.never()).enviarEmail(Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString());
 	}
 }
