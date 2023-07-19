@@ -44,23 +44,14 @@ public class SistemaCadastroTest {
 
 	@Test
 	public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
-
-		String nome = "Roberto";
-		String sobrenome = "Silveira";
-		String cidade = "Brasilandia";
-		String cep = "41259-387";
-		String endereco = "Viela Yasmin de Assunção";
-		String idade = "28";
+        //Cenario
 		String email = "robertosilveira@gmail.com";
 		String login = "rbt12";
 		String senha = "123456";
-
+        //Acao e verificacao
 		sistemaCadastro.cadastrarUsuario(email, login, senha);
 		Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getConsoleOutputString());
 		Assert.assertEquals("E-mail de confirmação enviado para " + email, sistemaCadastro.getMensagemConfirmacao());
-		System.out.println("Nome: " + nome + "\nSobrenome: " + sobrenome + "\nCidade: " + cidade + "\nCEP: " + cep
-				+ "\nEndereço: " + endereco + "\nIdade: " + idade + "\nEmail: " + email + "\nUsuário: " + login
-				+ "\nSenha: " + senha);
 
 	}
 
@@ -118,17 +109,84 @@ public class SistemaCadastroTest {
 		String email = "arthurhenrique.peres@yahoo.com";
 		String login = "hmano";
 		String senha = "12345";
+		final String erroSobrenome = "Sobrenome inválido: campo vazio.";
 
 		try {
 			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
 			Assert.fail("Expected SistemaCadastroException");
 		} catch (SistemaCadastroException e) {
-			Assert.assertEquals("Sobrenome inválido: campo vazio.", e.getMensagensErro().get(0));
+			Assert.assertEquals(erroSobrenome, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste05CampoSobrenomeComCaracteresInvalido() {
+
+		String nome = "Hélio";
+		String sobrenome = "Brab@";
+		String cidade = "Castro Alves";
+		String cep = "57115213";
+		String endereco = "Joquetina Soares";
+		String idade = "31";
+		String email = "arthurhenrique.peres@yahoo.com";
+		String login = "hmano";
+		String senha = "12345";
+		final String erroSobrenome = "Sobrenome inválido: caracteres inválidos.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroSobrenome, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste06CampoCidadeVazio() {
+
+		String nome = "Master";
+		String sobrenome = "Capista";
+		String cidade = "";
+		String cep = "57115213";
+		String endereco = "Joquetina Soares";
+		String idade = "31";
+		String email = "arthurhenrique.peres@yahoo.com";
+		String login = "hmano";
+		String senha = "12345";
+		final String erroCidade = "Cidade inválido: campo vazio.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroCidade, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste07CampoCidadeComCaracteresInvalido() {
+
+		String nome = "Master";
+		String sobrenome = "Capista";
+		String cidade = "Alvares12";
+		String cep = "57115213";
+		String endereco = "Joquetina Soares";
+		String idade = "31";
+		String email = "arthurhenrique.peres@yahoo.com";
+		String login = "hmano";
+		String senha = "12345";
+		final String erroCidade = "Cidade inválido: caracteres inválidos.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroCidade, e.getMensagensErro().get(0));
 		}
 	}
 
 	@Test
-	public void teste05CampoCEPComLetra() {
+	public void teste08CampoCEPComCaracteresInvalido() {
 
 		String nome = "Aline";
 		String sobrenome = "Muniz";
@@ -139,17 +197,172 @@ public class SistemaCadastroTest {
 		String email = "line.muniz@yahoo.com";
 		String login = "li001";
 		String senha = "12345";
+		final String erroCep = "CEP inválido: caracteres inválidos.";
 
 		try {
 			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
 			Assert.fail("Expected SistemaCadastroException");
 		} catch (SistemaCadastroException e) {
-			Assert.assertEquals("CEP inválido: caracteres inválidos.", e.getMensagensErro().get(0));
+			Assert.assertEquals(erroCep, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste09CampoCEPVazio() {
+
+		String nome = "Aline";
+		String sobrenome = "Muniz";
+		String cidade = "Castro Alves";
+		String cep = "";
+		String endereco = "Joquetina Soares";
+		String idade = "31";
+		String email = "line.muniz@yahoo.com";
+		String login = "li001";
+		String senha = "12345";
+		final String erroCep = "CEP inválido: campo vazio.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroCep, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste10CampoEnderecoVazio() {
+
+		String nome = "Aline";
+		String sobrenome = "Muniz";
+		String cidade = "Castro Alves";
+		String cep = "34322";
+		String endereco = "";
+		String idade = "31";
+		String email = "line.muniz@yahoo.com";
+		String login = "li001";
+		String senha = "12345";
+		final String erroEnd = "Endereço inválido: campo vazio.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroEnd, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste11CampoEnderecoComCaracteresInvalido() {
+
+		String nome = "Aline";
+		String sobrenome = "Muniz";
+		String cidade = "Castro Alves";
+		String cep = "34322";
+		String endereco = "Rua Cba@";
+		String idade = "31";
+		String email = "line.muniz@yahoo.com";
+		String login = "li001";
+		String senha = "12345";
+		final String erroEnd = "Endereço inválido: caracteres inválidos.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroEnd, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste12CampoIdadeVazio() {
+
+		String nome = "Josefa";
+		String sobrenome = "Bulhoes";
+		String cidade = "Castro Alves";
+		String cep = "34323232";
+		String endereco = "Rua Salinas";
+		String idade = "";
+		String email = "line.muniz@yahoo.com";
+		String login = "li001";
+		String senha = "12345";
+		final String erroIdade = "Idade inválido: campo vazio.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroIdade, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste13CampoIdadeComCaracteresInvalido() {
+
+		String nome = "Josefa";
+		String sobrenome = "Bulhoes";
+		String cidade = "Castro Alves";
+		String cep = "34323232";
+		String endereco = "Rua Salinas";
+		String idade = "2O";
+		String email = "line.muniz@yahoo.com";
+		String login = "li001";
+		String senha = "12345";
+		final String erroIdade = "Idade inválido: caracteres inválidos.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroIdade, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste14CampoEmailVazio() {
+
+		String nome = "Josefa";
+		String sobrenome = "Bulhoes";
+		String cidade = "Castro Alves";
+		String cep = "34323232";
+		String endereco = "Rua Salinas";
+		String idade = "25";
+		String email = "";
+		String login = "li001";
+		String senha = "12345";
+		final String erroEmail = "E-mail inválido: campo vazio.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroEmail, e.getMensagensErro().get(0));
+		}
+	}
+	
+	@Test
+	public void teste15CampoEmailEscritoIncorreto() {
+
+		String nome = "Mauricio";
+		String sobrenome = "Borges";
+		String cidade = "Peripécia";
+		String cep = "34323232";
+		String endereco = "Rua Das Alturas";
+		String idade = "29";
+		String email = "mauricio@gmailcom";
+		String login = "li001";
+		String senha = "12345";
+		final String erroEmail = "E-mail inválido: formato inválido.";
+
+		try {
+			SistemaCadastro.validarCadastro(nome, sobrenome, cidade, cep, endereco, idade, email, login, senha);
+			Assert.fail("Expected SistemaCadastroException");
+		} catch (SistemaCadastroException e) {
+			Assert.assertEquals(erroEmail, e.getMensagensErro().get(0));
 		}
 	}
 
 	@Test
-	public void teste06CadastroUsuarioExistente() throws SistemaCadastroException {
+	public void teste16CadastroUsuarioExistente() throws SistemaCadastroException {
 
 		String email = "madalena@gmail.com";
 		String usuarioCadastrado = "Usuário já está cadastrado no sistema: ";
@@ -177,7 +390,7 @@ public class SistemaCadastroTest {
 	}
 
 	@Test
-	public void teste07ValidarEnvioDeEmailDeConfirmacao() throws Exception {
+	public void teste17ValidarEnvioDeEmailDeConfirmacao() throws Exception {
 
 		String email = "antonio.caseira@gmail.com";
 		String mensagemEsperada = "E-mail de confirmação enviado para " + email;
