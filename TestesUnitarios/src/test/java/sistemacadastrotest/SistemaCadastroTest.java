@@ -5,7 +5,11 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
 import cadastrobuilder.SistemaCadastroBuilder;
 import cadastrocliente.VerificarCadastro;
 import cadastroexception.SistemaCadastroException;
@@ -15,45 +19,34 @@ import sistema.SistemaCadastro;
 public class SistemaCadastroTest {
 
 	static SistemaCadastroException exception;
+	@InjectMocks
 	private SistemaCadastro sistemaCadastro;
 
-	private VerificarCadastro verificarCadastroExistente() {
-		return Mockito.mock(VerificarCadastro.class);
-	}
+	@Mock
+	private VerificarCadastro verificarCadastroExistente;
 
 	@Before
 	public void setup() {
-
-		// Cria uma instância simulada de VerificarCadastro usando o método
-		// criarVerificacaoDeCadastro()
-		VerificarCadastro verificarCadastro = verificarCadastroExistente();
-		/*
-		 * Configura o comportamento da instância simulada para retornar falso quando o
-		 * método verificarCadastroExistente() for chamado com qualquer argumento de
-		 * string
-		 */
-		Mockito.when(verificarCadastro.verificarCadastroExistente(Mockito.anyString())).thenReturn(false);
-		// Cria uma instância de SistemaCadastroBuilder com a configuração do
-		// verificarCadastroExistente
-		SistemaCadastroBuilder sistemaCadastroBuilder = SistemaCadastroBuilder.builder()
-				.verificarCadastroExistente(verificarCadastro);
-		// Constrói uma instância de SistemaCadastro com base na configuração definida
-		// no builder
-		sistemaCadastro = sistemaCadastroBuilder.build();
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
-        //Cenario
-		String email = "robertosilveira@gmail.com";
-		String login = "rbt12";
-		String senha = "123456";
-        //Acao e verificacao
-		sistemaCadastro.cadastrarUsuario(email, login, senha);
-		Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getConsoleOutputString());
-		Assert.assertEquals("E-mail de confirmação enviado para " + email, sistemaCadastro.getMensagemConfirmacao());
+    public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
+        // Cenário
+        String email = "robertosilveira@gmail.com";
+        String login = "rbt12";
+        String senha = "123456";
 
-	}
+        // Configuração do mock
+        Mockito.when(verificarCadastroExistente.verificarCadastroExistente(email)).thenReturn(false);
+
+        // Ação
+        sistemaCadastro.cadastrarUsuario(email, login, senha);
+
+        // Verificação
+        Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getCadastroRealizado());
+        Assert.assertEquals("E-mail de confirmação enviado para " + email, sistemaCadastro.getMensagemConfirmacao());
+    }
 
 	@Test
 	public void teste02CampoNomeVazio() {
@@ -118,7 +111,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroSobrenome, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste05CampoSobrenomeComCaracteresInvalido() {
 
@@ -140,7 +133,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroSobrenome, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste06CampoCidadeVazio() {
 
@@ -162,7 +155,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroCidade, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste07CampoCidadeComCaracteresInvalido() {
 
@@ -206,7 +199,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroCep, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste09CampoCEPVazio() {
 
@@ -228,7 +221,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroCep, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste10CampoEnderecoVazio() {
 
@@ -250,7 +243,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroEnd, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste11CampoEnderecoComCaracteresInvalido() {
 
@@ -272,7 +265,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroEnd, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste12CampoIdadeVazio() {
 
@@ -294,7 +287,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroIdade, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste13CampoIdadeComCaracteresInvalido() {
 
@@ -316,7 +309,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroIdade, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste14CampoEmailVazio() {
 
@@ -338,7 +331,7 @@ public class SistemaCadastroTest {
 			Assert.assertEquals(erroEmail, e.getMensagensErro().get(0));
 		}
 	}
-	
+
 	@Test
 	public void teste15CampoEmailEscritoIncorreto() {
 
