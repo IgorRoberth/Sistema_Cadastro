@@ -12,9 +12,9 @@ public class SistemaCadastroException extends Exception {
 		this.mensagensErro = mensagensErro;
 	}
 
-	public SistemaCadastroException(String mensagemErro) {
+	public SistemaCadastroException(String mensagenErro) {
 		this.mensagensErro = new ArrayList<>();
-		this.mensagensErro.add(mensagemErro);
+		this.mensagensErro.add(mensagenErro);
 	}
 
 	public List<String> getMensagensErro() {

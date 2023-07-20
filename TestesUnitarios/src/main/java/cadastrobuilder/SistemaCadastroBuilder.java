@@ -22,7 +22,7 @@ public class SistemaCadastroBuilder {
 	}
 
 	public SistemaCadastroBuilder MensagemCadastroConcluido(String MensagemCadastroConcluido) {
-		sistemaCadastro.setConsoleOutputString(MensagemCadastroConcluido);
+		sistemaCadastro.setCadastroSucesso(MensagemCadastroConcluido);
 		return this;
 	}
 
