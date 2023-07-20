@@ -9,7 +9,7 @@ import verificarcadastromock.VerificarCadastroMock;
 
 public class SistemaCadastro {
 
-	private String consoleOutputString = "Cadastro realizado com sucesso";
+	private String cadastroRealizado = "Cadastro realizado com sucesso";
 	private List<String> usuariosCadastrados = new ArrayList<>();
 	private String mensagemConfirmacao;
 	private VerificarCadastro verificarCadastroExistente;
@@ -31,6 +31,10 @@ public class SistemaCadastro {
 	public void setVerificarCadastro(VerificarCadastro verificarCadastro) {
 		this.verificarCadastroExistente = verificarCadastro;
 	}
+	
+	public void setCadastroSucesso(String mensagemCadastroConcluido) {
+	   this.setCadastroSucesso(mensagemCadastroConcluido); 	
+	}
 
 	public void setEnviarEmail(EnviarEmail enviarEmail) {
 		this.enviarEmail = enviarEmail;
@@ -51,8 +55,16 @@ public class SistemaCadastro {
 		usuariosCadastrados.add(email);
 		this.login = login;
 		this.senha = senha;
-		consoleOutputString = "Cadastro realizado com sucesso";
+		cadastroRealizado = "Cadastro realizado com sucesso";
 		enviarEmailConfirmacao(email);
+	}
+
+	public String getCadastroRealizado() {
+		return cadastroRealizado;
+	}
+
+	public void setCadastroRealizado(String cadastroRealizado) {
+		this.cadastroRealizado = cadastroRealizado;
 	}
 
 	private void enviarEmailConfirmacao(String email) {
@@ -62,14 +74,6 @@ public class SistemaCadastro {
 
 	public String getMensagemConfirmacao() {
 		return mensagemConfirmacao;
-	}
-
-	public String getConsoleOutputString() {
-		return consoleOutputString;
-	}
-
-	public void setConsoleOutputString(String consoleOutputString) {
-		this.consoleOutputString = consoleOutputString;
 	}
 
 	public static void validarCadastro(String nome, String sobrenome, String cidade, String cep, String endereco,
@@ -141,7 +145,7 @@ public class SistemaCadastro {
 		}
 	}
 
-	public void recuperarSenha(String email) throws SistemaCadastroException {
+	public String recuperarSenha(String email) throws SistemaCadastroException {
 		if (!usuariosCadastrados.contains(email)) {
 			throw new SistemaCadastroException("E-mail não cadastrado.");
 		}
@@ -149,9 +153,10 @@ public class SistemaCadastro {
 		String novaSenha = gerarNovaSenha();
 		enviarEmailSenha(email, novaSenha);
 		setSenha(novaSenha); // Define a nova senha no objeto SistemaCadastro
+		return novaSenha;
 	}
 
-	private String gerarNovaSenha() {
+	public String gerarNovaSenha() {
 		String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder sb = new StringBuilder();
 		java.util.Random random = new java.util.Random();
@@ -165,6 +170,14 @@ public class SistemaCadastro {
 	private void enviarEmailSenha(String email, String novaSenha) {
 		enviarEmail.enviarEmail(email, "Recuperação de senha", "Sua nova senha é: " + novaSenha);
 	}
+	
+	public SistemaCadastro(EnviarEmail enviarEmail) {
+        this.enviarEmail = enviarEmail;
+    }
+
+    public EnviarEmail getEnviarEmail() {
+        return enviarEmail;
+    }
 
 	public static void sistemaCadastro(String[] args) {
 		SistemaCadastro sistemaCadastro = new SistemaCadastro();
@@ -176,7 +189,7 @@ public class SistemaCadastro {
 
 		try {
 			sistemaCadastro.cadastrarUsuario("email@example.com", "login", "senha");
-			System.out.println(sistemaCadastro.getConsoleOutputString());
+			System.out.println(sistemaCadastro.getMensagemConfirmacao());
 		} catch (SistemaCadastroException e) {
 			for (String mensagemErro : e.getMensagensErro()) {
 				System.out.println(mensagemErro);
