@@ -1,0 +1,18 @@
+// private VerificarCadastro verificarCadastroExistente() {
+// return Mockito.mock(VerificarCadastro.class);
+// Cria uma instância simulada de VerificarCadastro usando o método
+// criarVerificacaoDeCadastro()
+// VerificarCadastro verificarCadastro = verificarCadastroExistente();
+/*
+ * Configura o comportamento da instância simulada para retornar falso quando o
+ * método verificarCadastroExistente() for chamado com qualquer argumento de
+ * string
+ */
+// Mockito.when(verificarCadastro.verificarCadastroExistente(Mockito.anyString())).thenReturn(false);
+// Cria uma instância de SistemaCadastroBuilder com a configuração do
+// verificarCadastroExistente
+// SistemaCadastroBuilder sistemaCadastroBuilder = SistemaCadastroBuilder.builder()
+//     .verificarCadastroExistente(verificarCadastro);
+// Constrói uma instância de SistemaCadastro com base na configuração definida
+// no builder
+// sistemaCadastro = sistemaCadastroBuilder.build();
