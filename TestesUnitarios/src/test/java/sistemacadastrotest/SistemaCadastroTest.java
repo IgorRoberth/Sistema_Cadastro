@@ -24,7 +24,6 @@ public class SistemaCadastroTest {
 	static SistemaCadastroException exception;
 	@InjectMocks
 	private SistemaCadastro sistemaCadastro;
-
 	@Mock
 	private VerificarCadastro verificarCadastroExistente;
 	@Mock
