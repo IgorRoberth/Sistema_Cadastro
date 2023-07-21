@@ -1,5 +1,7 @@
 package sistemacadastrotest;
 
+import static org.mockito.Mockito.mock;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -9,10 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import cadastrobuilder.SistemaCadastroBuilder;
 import cadastrocliente.VerificarCadastro;
 import cadastroexception.SistemaCadastroException;
+import enviaremail.EnviarEmail;
+import mockenviaremail.MockEnviarEmail;
 import sistema.SistemaCadastro;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -24,10 +27,14 @@ public class SistemaCadastroTest {
 
 	@Mock
 	private VerificarCadastro verificarCadastroExistente;
+	@Mock
+	private EnviarEmail enviarEmailMock;
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
+		enviarEmailMock = mock(EnviarEmail.class);
+        verificarCadastroExistente = mock(VerificarCadastro.class);
 	}
 
 	@Test
@@ -371,7 +378,7 @@ public class SistemaCadastroTest {
 
 		// Cria uma instância de SistemaCadastro usando o Builder e define o
 		// verificarCadastro
-		SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder().verificarCadastroExistente(verificarCadastro)
+		SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail()).verificarCadastroExistente(verificarCadastro)
 				.build();
 		// Executa o teste e captura a exceção lançada
 		try {
