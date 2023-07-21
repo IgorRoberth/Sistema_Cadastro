@@ -5,7 +5,7 @@ import java.util.List;
 import cadastrocliente.VerificarCadastro;
 import cadastroexception.SistemaCadastroException;
 import enviaremail.EnviarEmail;
-import verificarcadastromock.VerificarCadastroMock;
+import java.util.*;
 
 public class SistemaCadastro {
 
@@ -16,24 +16,15 @@ public class SistemaCadastro {
 	private EnviarEmail enviarEmail;
 	private String login;
 	private String senha;
+	private String email;
+	private Map<String, String> emailSenhaMap = new HashMap<>();
 
-	public SistemaCadastro() {
-	}
-
-	public static void main(String[] args) {
-
-		SistemaCadastro sistemaCadastro = new SistemaCadastro();
-		VerificarCadastroMock verificarCadastroMock = new VerificarCadastroMock();
-		verificarCadastroMock.setCadastroExistente(true);
-		sistemaCadastro.setVerificarCadastro(verificarCadastroMock);
+	public SistemaCadastro(EnviarEmail enviarEmail) {
+		this.enviarEmail = enviarEmail;
 	}
 
 	public void setVerificarCadastro(VerificarCadastro verificarCadastro) {
 		this.verificarCadastroExistente = verificarCadastro;
-	}
-	
-	public void setCadastroSucesso(String mensagemCadastroConcluido) {
-	   this.setCadastroSucesso(mensagemCadastroConcluido); 	
 	}
 
 	public void setEnviarEmail(EnviarEmail enviarEmail) {
@@ -53,6 +44,7 @@ public class SistemaCadastro {
 			throw new SistemaCadastroException(List.of("Usuário já está cadastrado no sistema: "));
 		}
 		usuariosCadastrados.add(email);
+		this.email = email;
 		this.login = login;
 		this.senha = senha;
 		cadastroRealizado = "Cadastro realizado com sucesso";
@@ -136,13 +128,14 @@ public class SistemaCadastro {
 		System.out.println("Senha: " + senha);
 	}
 
-	public void autenticarUsuario(String login, String senha) throws SistemaCadastroException {
+	public String autenticarUsuario(String login, String senha) throws SistemaCadastroException {
 		if (!login.equals(this.login)) {
 			throw new SistemaCadastroException("Login incorreto.");
 		}
 		if (!senha.equals(this.senha)) {
 			throw new SistemaCadastroException("Senha incorreta.");
 		}
+		return "Usuário autenticado com sucesso.";
 	}
 
 	public String recuperarSenha(String email) throws SistemaCadastroException {
@@ -150,12 +143,18 @@ public class SistemaCadastro {
 			throw new SistemaCadastroException("E-mail não cadastrado.");
 		}
 		// Lógica para recuperação de senha
+		if (emailSenhaMap.containsKey(email)) {
+			return "Sua senha foi encaminhada para email: " + gerarNovaSenha();
+		}
+		// Define a nova senha no objeto SistemaCadastro
 		String novaSenha = gerarNovaSenha();
 		enviarEmailSenha(email, novaSenha);
-		setSenha(novaSenha); // Define a nova senha no objeto SistemaCadastro
-		return novaSenha;
+		setSenha(novaSenha);
+		emailSenhaMap.put(email, novaSenha);
+		return "Sua nova senha é: " + novaSenha;
 	}
-
+	
+    //Regra para gerar nova senha com 8 carácteres
 	public String gerarNovaSenha() {
 		String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder sb = new StringBuilder();
@@ -170,46 +169,5 @@ public class SistemaCadastro {
 	private void enviarEmailSenha(String email, String novaSenha) {
 		enviarEmail.enviarEmail(email, "Recuperação de senha", "Sua nova senha é: " + novaSenha);
 	}
-	
-	public SistemaCadastro(EnviarEmail enviarEmail) {
-        this.enviarEmail = enviarEmail;
-    }
 
-    public EnviarEmail getEnviarEmail() {
-        return enviarEmail;
-    }
-
-	public static void sistemaCadastro(String[] args) {
-		SistemaCadastro sistemaCadastro = new SistemaCadastro();
-
-		VerificarCadastroMock verificarCadastroMock = new VerificarCadastroMock();
-		sistemaCadastro.setVerificarCadastro(verificarCadastroMock);
-
-		verificarCadastroMock.setCadastroExistente(true);
-
-		try {
-			sistemaCadastro.cadastrarUsuario("email@example.com", "login", "senha");
-			System.out.println(sistemaCadastro.getMensagemConfirmacao());
-		} catch (SistemaCadastroException e) {
-			for (String mensagemErro : e.getMensagensErro()) {
-				System.out.println(mensagemErro);
-			}
-		}
-
-		sistemaCadastro.exibirCadastro("Nome", "Sobrenome", "Cidade", "CEP", "Endereço", "Idade", "email@example.com",
-				"login", "senha");
-
-		try {
-			sistemaCadastro.autenticarUsuario("login", "senha");
-			System.out.println("Usuário autenticado com sucesso.");
-		} catch (SistemaCadastroException e) {
-			System.out.println(e.getMessage());
-		}
-
-		try {
-			sistemaCadastro.recuperarSenha("email@example.com");
-		} catch (SistemaCadastroException e) {
-			System.out.println(e.getMessage());
-		}
-	}
 }
