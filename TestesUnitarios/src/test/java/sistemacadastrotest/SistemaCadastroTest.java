@@ -42,16 +42,16 @@ public class SistemaCadastroTest {
         String email = "robertosilveira@gmail.com";
         String login = "rbt12";
         String senha = "123456";
+        final String Sucess = "Cadastro realizado com sucesso";
+        final String confirmEmail = "E-mail de confirmação enviado para ";
 
         // Configuração do mock
         Mockito.when(verificarCadastroExistente.verificarCadastroExistente(email)).thenReturn(false);
-
         // Ação
         sistemaCadastro.cadastrarUsuario(email, login, senha);
-
         // Verificação
-        Assert.assertEquals("Cadastro realizado com sucesso", sistemaCadastro.getCadastroRealizado());
-        Assert.assertEquals("E-mail de confirmação enviado para " + email, sistemaCadastro.getMensagemConfirmacao());
+        Assert.assertEquals(Sucess, sistemaCadastro.getCadastroRealizado());
+        Assert.assertEquals(confirmEmail + email, sistemaCadastro.getMensagemConfirmacao());
     }
 
 	@Test
@@ -364,17 +364,14 @@ public class SistemaCadastroTest {
 	public void teste16CadastroUsuarioExistente() throws SistemaCadastroException {
 
 		String email = "madalena@gmail.com";
-		String usuarioCadastrado = "Usuário já está cadastrado no sistema: ";
+		final String usuarioCadastrado = "Usuário já está cadastrado no sistema: ";
 		String login = "mada007";
 		String senha = "12345";
-
 		// Cria um mock do VerificarCadastro
 		VerificarCadastro verificarCadastro = Mockito.mock(VerificarCadastro.class);
-
 		// Define o comportamento do mock para retornar true, indicando que o usuário já
 		// está cadastrado
 		Mockito.when(verificarCadastro.verificarCadastroExistente(email)).thenReturn(true);
-
 		// Cria uma instância de SistemaCadastro usando o Builder e define o
 		// verificarCadastro
 		SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail()).verificarCadastroExistente(verificarCadastro)
@@ -392,9 +389,9 @@ public class SistemaCadastroTest {
 	public void teste17ValidarEnvioDeEmailDeConfirmacao() throws Exception {
 
 		String email = "antonio.caseira@gmail.com";
-		String mensagemEsperada = "E-mail de confirmação enviado para " + email;
 		String login = "tonho06";
 		String senha = "12345";
+		final String mensagemEsperada = "E-mail de confirmação enviado para " + email;
 
 		try {
 			sistemaCadastro.cadastrarUsuario(email, login, senha);
