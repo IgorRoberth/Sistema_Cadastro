@@ -1,5 +1,5 @@
 Antes de utilizar as anotações @Mock e @InjectMocks, o código era mais verboso. 
-Então vi o professor falando sobre essas anotações e suas vantagens e decidi utilizar.
+Então o professor estava falando sobre essas anotações e suas vantagens e decidi utilizar.
 Ao utilizar essas anotações, foi possível reduzir a verbosidade e simplificar o processo 
 de criação de objetos simulados (mocks).
 Ao usar as anotações @Mock e @InjectMocks, o processo de criação de mocks ficou mais automático.
