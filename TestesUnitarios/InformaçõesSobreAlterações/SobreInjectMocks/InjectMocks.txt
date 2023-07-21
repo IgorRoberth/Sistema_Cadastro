@@ -1,18 +1,31 @@
-// private VerificarCadastro verificarCadastroExistente() {
-// return Mockito.mock(VerificarCadastro.class);
-// Cria uma instância simulada de VerificarCadastro usando o método
-// criarVerificacaoDeCadastro()
-// VerificarCadastro verificarCadastro = verificarCadastroExistente();
-/*
- * Configura o comportamento da instância simulada para retornar falso quando o
- * método verificarCadastroExistente() for chamado com qualquer argumento de
- * string
- */
-// Mockito.when(verificarCadastro.verificarCadastroExistente(Mockito.anyString())).thenReturn(false);
-// Cria uma instância de SistemaCadastroBuilder com a configuração do
-// verificarCadastroExistente
-// SistemaCadastroBuilder sistemaCadastroBuilder = SistemaCadastroBuilder.builder()
-//     .verificarCadastroExistente(verificarCadastro);
-// Constrói uma instância de SistemaCadastro com base na configuração definida
-// no builder
-// sistemaCadastro = sistemaCadastroBuilder.build();
+Antes de utilizar as anotações @Mock e @InjectMocks, o código era mais verboso. 
+Então vi o processor falando sobre essas anotações e suas vantagens e decidir utilizar.
+Ao utilizar essas anotações, foi possível reduzir a verbosidade e simplificar o processo 
+de criação de objetos simulados (mocks).
+Ao usar as anotações @Mock e @InjectMocks, o processo de criação de mocks ficou mais automático.
+Se um parâmetro em uma classe faz referência a uma organização de mocks, 
+a anotação @InjectMocks será capaz de realizar a injeção automática desses mocks na classe.
+Essas anotações são úteis para facilitar a criação e injeção de mocks, tornando o código mais 
+limpo e de fácil manutenção.
+É importante lembrar que as anotações @Mock e @InjectMocks geralmente são utilizadas em 
+conjunto com frameworks de teste, como o Mockito, para facilitar a criação de mocks e a 
+injeção de dependências durante os testes automatizados.
+A parte abaixo mostra o quanto de código pude deixar de lado após usar anotações para deixar
+menos verboso o código.
+===============================================================================================
+
+private VerificarCadastro verificarCadastroExistente() {
+return Mockito.mock(VerificarCadastro.class);
+
+Cria uma instância simulada de VerificarCadastro usando o método
+criarVerificacaoDeCadastro()
+VerificarCadastro verificarCadastro = verificarCadastroExistente();
+Configura o comportamento da instância simulada para retornar falso quando o
+método verificarCadastroExistente() for chamado com qualquer argumento de
+string
+Mockito.when(verificarCadastro.verificarCadastroExistente(Mockito.anyString())).thenReturn(false);
+Cria uma instância de SistemaCadastroBuilder com a configuração do
+verificarCadastroExistente
+SistemaCadastroBuilder sistemaCadastroBuilder = SistemaCadastroBuilder.builder().verificarCadastroExistente(verificarCadastro);
+// Constrói uma instância de SistemaCadastro com base na configuração definida no builder
+sistemaCadastro = sistemaCadastroBuilder.build();
