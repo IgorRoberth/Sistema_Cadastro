@@ -1,10 +1,10 @@
 Antes de utilizar as anotações @Mock e @InjectMocks, o código era mais verboso. 
-Então vi o processor falando sobre essas anotações e suas vantagens e decidir utilizar.
+Então vi o professor falando sobre essas anotações e suas vantagens e decidi utilizar.
 Ao utilizar essas anotações, foi possível reduzir a verbosidade e simplificar o processo 
 de criação de objetos simulados (mocks).
 Ao usar as anotações @Mock e @InjectMocks, o processo de criação de mocks ficou mais automático.
-Se um parâmetro em uma classe faz referência a uma organização de mocks, 
-a anotação @InjectMocks será capaz de realizar a injeção automática desses mocks na classe.
+Se um parâmetro em uma classe faz referência a uma organização de mocks, a anotação @InjectMocks 
+será capaz de realizar a injeção automática desses mocks na classe.
 Essas anotações são úteis para facilitar a criação e injeção de mocks, tornando o código mais 
 limpo e de fácil manutenção.
 É importante lembrar que as anotações @Mock e @InjectMocks geralmente são utilizadas em 
