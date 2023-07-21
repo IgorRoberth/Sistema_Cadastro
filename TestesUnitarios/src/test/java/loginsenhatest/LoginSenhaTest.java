@@ -33,7 +33,6 @@ public class LoginSenhaTest {
 		sistemaCadastro.setLogin("rbt12");
 		sistemaCadastro.setSenha("12345");
 		sistemaCadastro.autenticarUsuario("rbt12", "12345");
-
 		// Verificacao e acao
 		try {
 			sistemaCadastro.autenticarUsuario("rbt12", "12345");
@@ -64,7 +63,6 @@ public class LoginSenhaTest {
 		SistemaCadastro sistemaCadastro = new SistemaCadastro(new MockEnviarEmail());
 		sistemaCadastro.setLogin("joaolucas");
 		sistemaCadastro.setSenha("12345");
-
 		// acao e verificacao
 		try {
 			sistemaCadastro.autenticarUsuario("joaolucas", "12345");
@@ -80,7 +78,6 @@ public class LoginSenhaTest {
 		SistemaCadastro sistemaCadastro = new SistemaCadastro(new MockEnviarEmail());
 		sistemaCadastro.setLogin("josed");
 		sistemaCadastro.setSenha("12345");
-
 		// acao e verificacao
 		try {
 			sistemaCadastro.autenticarUsuario("josed", "12346");
@@ -96,19 +93,18 @@ public class LoginSenhaTest {
 	    String emailCadastrado = "marcosvi@hotmail.com";
 	    String login = "marco06";
 	    String senha = "123456";
-	    //Parametrização do 
+	    //Parametrização do Mock para verificar a simulação de envio da nova senha por e-mail
 	    SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail())
 	            .verificarCadastroExistente(new VerificarCadastroMock())
 	            .build();
-
 	    // Execução do teste
 	    sistemaCadastro.cadastrarUsuario(emailCadastrado, login, senha);
 	    String resultado = sistemaCadastro.recuperarSenha(emailCadastrado);
-
 	    // Verificação
-	    Assert.assertFalse(resultado.contains("Sua senha foi encaminhada para email:"));
+	    Assert.assertFalse("A senha não deve ser encaminhada por e-mail ",resultado.contains("Sua senha foi encaminhada para email:"));
 	    Assert.assertTrue(resultado.startsWith("Sua nova senha é:"));
-	    System.out.println(resultado);
+	    System.out.println("Sua nova senha foi encaminhada para email: " + emailCadastrado);
+	
 	}
 
 	@Test
@@ -117,11 +113,9 @@ public class LoginSenhaTest {
 		SistemaCadastro sistemaCadastro = new SistemaCadastro(new MockEnviarEmail());
 		String email = "gustavo.moniz@bol.com.br";
 		final String naoCadastrado = "E-mail não cadastrado.";
-
 		// Ação: cria um mock da interface EnviarEmail
 		EnviarEmail enviarEmailMock = Mockito.mock(EnviarEmail.class);
 		sistemaCadastro.setEnviarEmail(enviarEmailMock);
-
 		// Verificação
 		try {
 			sistemaCadastro.recuperarSenha(email);
@@ -129,7 +123,6 @@ public class LoginSenhaTest {
 		} catch (SistemaCadastroException e) {
 			Assert.assertEquals(naoCadastrado, e.getMensagensErro().get(0));
 		}
-
 		// Verifica se o método enviarEmail do objeto enviarEmailMock não foi chamado
 		Mockito.verify(enviarEmailMock, Mockito.never()).enviarEmail(Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString());
