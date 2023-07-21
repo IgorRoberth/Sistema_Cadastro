@@ -1,11 +1,12 @@
 package sistema;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import cadastrocliente.VerificarCadastro;
 import cadastroexception.SistemaCadastroException;
 import enviaremail.EnviarEmail;
-import java.util.*;
 
 public class SistemaCadastro {
 
@@ -144,7 +145,7 @@ public class SistemaCadastro {
 		}
 		// Lógica para recuperação de senha
 		if (emailSenhaMap.containsKey(email)) {
-			return "Sua senha foi encaminhada para email: " + gerarNovaSenha();
+			return "Sua nova senha foi encaminhada para email: " + gerarNovaSenha();
 		}
 		// Define a nova senha no objeto SistemaCadastro
 		String novaSenha = gerarNovaSenha();
