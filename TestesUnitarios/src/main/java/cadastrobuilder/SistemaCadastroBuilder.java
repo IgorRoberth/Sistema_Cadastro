@@ -1,6 +1,7 @@
 package cadastrobuilder;
 
 import cadastrocliente.VerificarCadastro;
+import enviaremail.EnviarEmail;
 import sistema.SistemaCadastro;
 
 public class SistemaCadastroBuilder {
@@ -8,12 +9,12 @@ public class SistemaCadastroBuilder {
 	private final SistemaCadastro sistemaCadastro;
 	private VerificarCadastro verificarCadastroExistente;
 
-	private SistemaCadastroBuilder() {
-		sistemaCadastro = new SistemaCadastro();
+	private SistemaCadastroBuilder(EnviarEmail enviarEmail) {
+		sistemaCadastro = new SistemaCadastro(enviarEmail);
 	}
 
-	public static SistemaCadastroBuilder builder() {
-		return new SistemaCadastroBuilder();
+	public static SistemaCadastroBuilder builder(EnviarEmail enviarEmail) {
+		return new SistemaCadastroBuilder(enviarEmail);
 	}
 
 	public SistemaCadastroBuilder verificarCadastroExistente(VerificarCadastro cadastroExistente) {
@@ -22,7 +23,7 @@ public class SistemaCadastroBuilder {
 	}
 
 	public SistemaCadastroBuilder MensagemCadastroConcluido(String MensagemCadastroConcluido) {
-		sistemaCadastro.setCadastroSucesso(MensagemCadastroConcluido);
+		sistemaCadastro.setCadastroRealizado(MensagemCadastroConcluido);
 		return this;
 	}
 
