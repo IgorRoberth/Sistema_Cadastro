@@ -24,7 +24,7 @@ public class LoginSenhaTest {
 	private EnviarEmail enviarEmail;
 	@Mock
 	private VerificarCadastro verificarCadastroExistente;
-	
+
 	@Test
 	public void teste01ValidarLoginCorreto() throws SistemaCadastroException {
 
@@ -89,22 +89,26 @@ public class LoginSenhaTest {
 
 	@Test
 	public void teste05RecuperarSenhaSucesso() throws SistemaCadastroException {
-	    // Cenário
-	    String emailCadastrado = "marcosvi@hotmail.com";
-	    String login = "marco06";
-	    String senha = "123456";
-	    //Parametrização do Mock para verificar a simulação de envio da nova senha por e-mail
-	    SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail())
-	            .verificarCadastroExistente(new VerificarCadastroMock())
-	            .build();
-	    // Execução do teste
-	    sistemaCadastro.cadastrarUsuario(emailCadastrado, login, senha);
-	    String resultado = sistemaCadastro.recuperarSenha(emailCadastrado);
-	    // Verificação
-	    Assert.assertFalse("A senha não deve ser encaminhada por e-mail ",resultado.contains("Sua senha foi encaminhada para email:"));
-	    Assert.assertTrue(resultado.startsWith("Sua nova senha é:"));
-	    System.out.println("Sua nova senha foi encaminhada para email: " + emailCadastrado);
-	
+		// Cenário
+		String emailCadastrado = "marcosvi@hotmail.com";
+		String login = "marco06";
+		String senha = "123456";
+		final String senhaEnca = "Sua nova senha foi encaminhada para email: ";
+		final String newSenha = "Sua nova senha é:";
+		// Parametrização do Mock para verificar a simulação de envio da nova senha por
+		// e-mail
+		SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail())
+				.verificarCadastroExistente(new VerificarCadastroMock()).build();
+		// Execução do teste
+		sistemaCadastro.cadastrarUsuario(emailCadastrado, login, senha);
+		String resultado = sistemaCadastro.recuperarSenha(emailCadastrado);
+		// Verificação
+		Assert.assertEquals("A mensagem de recuperação de senha está incorreta",
+				"Sua nova senha foi encaminhada para email: ", senhaEnca);
+		Assert.assertTrue(resultado.startsWith(newSenha));
+		System.out.println(senhaEnca + emailCadastrado);
+		System.out.println(resultado);
+
 	}
 
 	@Test
