@@ -26,6 +26,9 @@ public class SistemaCadastroTest {
 	private VerificarCadastro verificarCadastroExistente;
 	@Mock
 	private EnviarEmail enviarEmailMock;
+	
+	private final String Sucess = "Cadastro realizado com sucesso";
+    private final String confirmEmail = "E-mail de confirmação enviado para ";
 
 	@Before
 	public void setup() {
@@ -38,8 +41,6 @@ public class SistemaCadastroTest {
         String email = "robertosilveira@gmail.com";
         String login = "rbt12";
         String senha = "123456";
-        final String Sucess = "Cadastro realizado com sucesso";
-        final String confirmEmail = "E-mail de confirmação enviado para ";
 
         // Configuração do mock
         Mockito.when(verificarCadastroExistente.verificarCadastroExistente(email)).thenReturn(false);
@@ -387,11 +388,10 @@ public class SistemaCadastroTest {
 		String email = "antonio.caseira@gmail.com";
 		String login = "tonho06";
 		String senha = "12345";
-		final String mensagemEsperada = "E-mail de confirmação enviado para " + email;
 
 		try {
 			sistemaCadastro.cadastrarUsuario(email, login, senha);
-			Assert.assertEquals(mensagemEsperada, sistemaCadastro.getMensagemConfirmacao());
+			Assert.assertEquals(confirmEmail + email, sistemaCadastro.getMensagemConfirmacao());
 		} catch (SistemaCadastroException e) {
 			Assert.fail("Não era esperada uma exceção de SistemaCadastro.CadastroExistenteException");
 		}
