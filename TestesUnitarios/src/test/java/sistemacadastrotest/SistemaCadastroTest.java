@@ -35,7 +35,7 @@ public class SistemaCadastroTest {
 		MockitoAnnotations.initMocks(this);
 	}
 
-   @Test
+    @Test
     public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
         // Cenário
         String email = "robertosilveira@gmail.com";
