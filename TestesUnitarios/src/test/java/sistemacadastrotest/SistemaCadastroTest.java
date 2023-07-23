@@ -51,8 +51,8 @@ public class SistemaCadastroTest {
         Assert.assertEquals(confirmEmail + email, sistemaCadastro.getMensagemConfirmacao());
     }
 
-  @Test
-  public void teste02CampoNomeVazio() {
+   @Test
+   public void teste02CampoNomeVazio() {
 
 		String nome = "";
 		String sobrenome = "Brum";
