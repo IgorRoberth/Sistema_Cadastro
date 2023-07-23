@@ -1,7 +1,5 @@
 package sistemacadastrotest;
 
-import static org.mockito.Mockito.mock;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -32,8 +30,6 @@ public class SistemaCadastroTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		enviarEmailMock = mock(EnviarEmail.class);
-        verificarCadastroExistente = mock(VerificarCadastro.class);
 	}
 
 	@Test
