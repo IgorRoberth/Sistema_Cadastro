@@ -4,11 +4,8 @@ import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import cadastrobuilder.SistemaCadastroBuilder;
-import cadastrocliente.VerificarCadastro;
 import cadastroexception.SistemaCadastroException;
 import enviaremail.EnviarEmail;
 import mockenviaremail.MockEnviarEmail;
@@ -17,13 +14,6 @@ import verificarcadastromock.VerificarCadastroMock;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoginSenhaTest {
-
-	@InjectMocks
-	private SistemaCadastro sistemaCadastro;
-	@Mock
-	private EnviarEmail enviarEmail;
-	@Mock
-	private VerificarCadastro verificarCadastroExistente;
 
 	@Test
 	public void teste01ValidarLoginCorreto() throws SistemaCadastroException {
