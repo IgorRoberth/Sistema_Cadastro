@@ -26,9 +26,9 @@ public class SistemaCadastroTest {
 	private VerificarCadastro verificarCadastroExistente;
 	@Mock
 	private EnviarEmail enviarEmailMock;
-	
+
 	private final String Sucess = "Cadastro realizado com sucesso";
-    private final String confirmEmail = "E-mail de confirmação enviado para ";
+	private final String confirmEmail = "E-mail de confirmação enviado para ";
 
 	@Before
 	public void setup() {
@@ -36,20 +36,20 @@ public class SistemaCadastroTest {
 	}
 
 	@Test
-    public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
-        // Cenário
-        String email = "robertosilveira@gmail.com";
-        String login = "rbt12";
-        String senha = "123456";
+	public void teste01CadastroConcluidoComSucesso() throws SistemaCadastroException {
+		// Cenário
+		String email = "robertosilveira@gmail.com";
+		String login = "rbt12";
+		String senha = "123456";
 
-        // Configuração do mock
-        Mockito.when(verificarCadastroExistente.verificarCadastroExistente(email)).thenReturn(false);
-        // Ação
-        sistemaCadastro.cadastrarUsuario(email, login, senha);
-        // Verificação
-        Assert.assertEquals(Sucess, sistemaCadastro.getCadastroRealizado());
-        Assert.assertEquals(confirmEmail + email, sistemaCadastro.getMensagemConfirmacao());
-    }
+		// Configuração do mock
+		Mockito.when(verificarCadastroExistente.verificarCadastroExistente(email)).thenReturn(false);
+		// Ação
+		sistemaCadastro.cadastrarUsuario(email, login, senha);
+		// Verificação
+		Assert.assertEquals(Sucess, sistemaCadastro.getCadastroRealizado());
+		Assert.assertEquals(confirmEmail + email, sistemaCadastro.getMensagemConfirmacao());
+	}
 
 	@Test
 	public void teste02CampoNomeVazio() {
@@ -371,8 +371,8 @@ public class SistemaCadastroTest {
 		Mockito.when(verificarCadastro.verificarCadastroExistente(email)).thenReturn(true);
 		// Cria uma instância de SistemaCadastro usando o Builder e define o
 		// verificarCadastro
-		SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail()).verificarCadastroExistente(verificarCadastro)
-				.build();
+		SistemaCadastro sistemaCadastro = SistemaCadastroBuilder.builder(new MockEnviarEmail())
+				.verificarCadastroExistente(verificarCadastro).build();
 		// Executa o teste e captura a exceção lançada
 		try {
 			sistemaCadastro.cadastrarUsuario(email, login, senha);
