@@ -41,7 +41,6 @@ public class SistemaCadastroTest {
 		String email = "robertosilveira@gmail.com";
 		String login = "rbt12";
 		String senha = "123456";
-
 		// Configuração do mock
 		Mockito.when(verificarCadastroExistente.verificarCadastroExistente(email)).thenReturn(false);
 		// Ação
